@@ -1,0 +1,10 @@
+all:
+ hosts:
+   192.168.1.29: 
+     ansible_user: root
+     ansible_password: xv!54P94
+     ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+   192.168.1.77:
+     ansible_user: root
+     ansible_password: xv!54P94
+     ansible_ssh_common_args: '-o StrictHostKeyChecking=no'

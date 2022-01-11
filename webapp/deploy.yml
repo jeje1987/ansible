@@ -1,0 +1,39 @@
+---
+- name: "Apache installation using docker"
+  hosts: prod
+  pre_tasks:
+    - name: Install EPEL repo
+      package: name=epel-release state=present
+      when: ansible_distribution == "CentOS"
+
+    - name: Install yum utils
+      yum:
+        name: yum-utils
+        state: latest
+
+    - name: Add repo docker
+      command:
+        cmd: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+    - name: Installing docker
+      command:
+        cmd: yum install docker-ce --nobest --allowerasing -y
+        warn: false
+
+    - name: Starting and enabling docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Install docker python
+      pip: 
+        name: docker-py
+
+  tasks:
+    - name: Create Apache container
+      docker_container:
+        name: webapp
+        image: httpd
+        ports:
+          - "80:80"
